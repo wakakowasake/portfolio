@@ -193,13 +193,14 @@
                     const newDoc = parser.parseFromString(data, 'text/html');
                     
                     // 핵심 구역만 갈아끼우기 (지형이의 레이아웃 유지)
-                    const targetIds = ['timeline-container', 'project-container', 'awards-container', 'profile-name', 'profile-role', 'profile-desc', 'status-text', 'profile-img', 'map-frame', 'skill-data'];
+                    const targetIds = ['timeline-container', 'project-container', 'awards-container', 'profile-name', 'profile-role', 'profile-desc', 'status-text', 'profile-img', 'map-frame', 'skill-data', 'sns-insta', 'sns-gmail', 'contactBtn'];
                     targetIds.forEach(id => {
                         const newEl = newDoc.getElementById(id);
                         const oldEl = document.getElementById(id);
                         if (newEl && oldEl) {
                             if (id === 'profile-img') oldEl.src = newEl.src;
                             else if (id === 'map-frame') oldEl.src = newEl.src;
+                            else if (['sns-insta', 'sns-gmail', 'contactBtn'].includes(id)) oldEl.href = newEl.href;
                             else oldEl.innerHTML = newEl.innerHTML;
                         }
                     });
@@ -325,6 +326,18 @@
             </a>`;
             document.getElementById('detail-desc').innerHTML += html;
         }
+
+        // 링크 수정 이벤트 (편집 모드일 때만 동작)
+        document.addEventListener('click', function(e) {
+            if (window.isEditing) {
+                const link = e.target.closest('.editable-link');
+                if (link) {
+                    e.preventDefault();
+                    const newUrl = prompt("변경할 링크 주소를 입력하세요:", link.getAttribute('href'));
+                    if (newUrl !== null) link.setAttribute('href', newUrl);
+                }
+            }
+        });
 
         loadFromServer();
     </script>
