@@ -320,9 +320,16 @@
         window.insertBookmark = async function() {
             const url = prompt("북마크할 URL 입력:");
             if(!url) return;
-            const html = `<a href="${url}" target="_blank" class="bookmark-card block bg-white/5 p-4 rounded-xl no-underline my-2 border border-white/10">
-                <div class="font-bold text-white">${url}</div>
-                <div class="text-sm text-gray-400">클릭하여 링크 이동</div>
+            
+            // 썸네일 가져오기 (외부 서비스 사용) 및 컴팩트한 디자인 적용
+            const thumbUrl = `https://image.thum.io/get/width/150/crop/800/noanimate/${url}`;
+            
+            const html = `<a href="${url}" target="_blank" class="bookmark-card flex items-center gap-3 bg-white/5 p-2 rounded-lg no-underline my-2 border border-white/10 h-16 overflow-hidden hover:bg-white/10 transition-colors">
+                <img src="${thumbUrl}" alt="thumbnail" class="w-16 h-full object-cover rounded-md flex-shrink-0 bg-black/20">
+                <div class="flex flex-col justify-center min-w-0">
+                    <div class="font-bold text-white text-sm truncate">${url}</div>
+                    <div class="text-xs text-gray-400 truncate">페이지 방문하기</div>
+                </div>
             </a>`;
             document.getElementById('detail-desc').innerHTML += html;
         }
