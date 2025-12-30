@@ -46,7 +46,7 @@
         body.is-editing .add-btn { display: flex; }
         body.is-editing .delete-btn { display: block; }
         body.is-editing .editor-toolbar { display: flex; }
-        .delete-btn { position: absolute; right: -10px; top: -10px; background: #ef4444; color: white; border-radius: 50%; width: 24px; height: 24px; text-align: center; line-height: 24px; z-index: 10; cursor: pointer; box-shadow: 0 2px 5px rgba(0,0,0,0.3); }
+        .delete-btn { position: absolute; right: 5px; top: 5px; background: #ef4444; color: white; border-radius: 50%; width: 24px; height: 24px; text-align: center; line-height: 24px; z-index: 10; cursor: pointer; box-shadow: 0 2px 5px rgba(0,0,0,0.3); }
         .dragging { opacity: 0.5; border: 2px dashed #8c2bee !important; background: rgba(140, 43, 238, 0.05); }
         .bookmark-card:hover { background-color: rgba(255, 255, 255, 0.1); border-color: rgba(140, 43, 238, 0.5); }
         input[type=range].skill-slider { -webkit-appearance: none; background: transparent; width: 100%; }
@@ -106,7 +106,7 @@
         <div class="glass-card rounded-3xl p-6 md:row-span-2 md:col-span-1 flex flex-col relative overflow-hidden">
             <div class="flex justify-between items-center mb-6">
                 <h2 class="text-xl font-bold flex items-center gap-2"><span class="material-symbols-outlined text-primary">history_edu</span> Experience</h2>
-                <button onclick="addNewItem('exp')" class="add-btn bg-primary/20 text-primary px-2 py-1 rounded text-xs">추가</button>
+                <button onclick="addNewItem('exp')" class="add-btn bg-purple-500/20 text-primary px-2 py-1 rounded text-xs">추가</button>
             </div>
             <div class="overflow-y-auto pr-2 space-y-6 flex-1 custom-scrollbar" id="timeline-container"></div>
         </div>
@@ -114,13 +114,13 @@
         <div class="glass-card rounded-3xl p-6 md:row-span-2 md:col-span-1 flex flex-col overflow-hidden">
             <div class="flex justify-between items-center mb-4">
                 <h2 class="text-xl font-bold flex items-center gap-2"><span class="material-symbols-outlined text-primary">rocket_launch</span> Recent Work</h2>
-                <button onclick="addNewItem('proj')" class="add-btn bg-primary/20 text-primary px-2 py-1 rounded text-xs">추가</button>
+                <button onclick="addNewItem('proj')" class="add-btn bg-purple-500/20 text-primary px-2 py-1 rounded text-xs">추가</button>
             </div>
             <div id="project-container" class="overflow-y-auto pr-2 space-y-4 flex-1 custom-scrollbar"></div>
         </div>
 
         <div class="md:col-span-1 flex flex-col gap-4">
-            <div id="item-skill-perf" class="glass-card rounded-3xl p-6 flex flex-col justify-center relative cursor-pointer" onclick="openDetail('skill-perf')">
+            <div id="item-skill-perf" class="glass-card rounded-3xl p-6 flex flex-col justify-center relative">
                 <h3 class="font-bold text-lg mb-4 flex items-center gap-2"><span class="material-symbols-outlined text-blue-400">analytics</span> Performance</h3>
                 <div id="skill-data" style="display:none;">95,75,60,80,95</div>
                 <div id="skill-container" class="space-y-1"></div>
@@ -336,6 +336,22 @@
                     const newUrl = prompt("변경할 링크 주소를 입력하세요:", link.getAttribute('href'));
                     if (newUrl !== null) link.setAttribute('href', newUrl);
                 }
+            }
+        });
+
+        // 프로필 이미지 클릭 시 파일 업로드 (편집 모드)
+        document.getElementById('profile-img').addEventListener('click', function() {
+            if (window.isEditing) document.getElementById('imageInput').click();
+        });
+
+        document.getElementById('imageInput').addEventListener('change', function(e) {
+            const file = e.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    document.getElementById('profile-img').src = e.target.result;
+                };
+                reader.readAsDataURL(file);
             }
         });
 
